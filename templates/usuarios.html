@@ -1,0 +1,38 @@
+
+{% extends "base.html" %}
+
+{% block title %}
+Relação de usuários cadastrados
+{% endblock %}
+
+{% block content %}
+
+<h2>Relação de usuários cadastrados</h2>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Nome do usuário</th>
+            <th>E-mail</th>
+            <th>Confirmado?</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for usuario in usuarios %}
+        <tr>
+            <td>{{ usuario.name or usuario.username }}</td>
+            <td>{{ usuario.email or 'Não informado' }}</td>
+            <td>
+                {% if usuario.confirmed %}
+                    Sim
+                {% else %}
+                    Não
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

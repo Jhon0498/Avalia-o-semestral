@@ -1,0 +1,178 @@
+{# Herda a estrutura do Bootstrap #}
+{% extends "bootstrap/base.html" %}
+
+
+{# Define o título da página #}
+{% block title %}
+    Flasky
+{% endblock %}
+
+
+{# Configurações do cabeçalho da página #}
+{% block head %}
+
+    {# Mantém as configurações originais do Bootstrap #}
+    {{ super() }}
+
+    {# Ativa o Flask-Moment para trabalhar com datas #}
+    {{ moment.include_moment() }}
+
+    {# Define o ícone que aparece na aba do navegador #}
+    <link
+        rel="icon"
+        type="image/x-icon"
+        href="{{ url_for('static', filename='favicon.ico') }}"
+    >
+
+    {# Estilo da caixa de login #}
+    <style>
+
+        /* Define o tamanho e o espaçamento da caixa de login */
+        .login-container {
+            width: 300px;
+            margin: 20px auto;
+            padding: 28px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+
+    </style>
+
+{% endblock %}
+
+
+{# Barra de navegação do sistema #}
+{% block navbar %}
+
+<div class="navbar navbar-inverse" role="navigation">
+
+    <div class="container">
+
+        {# Área do nome do sistema e botão do menu #}
+        <div class="navbar-header">
+
+            {# Botão que aparece em telas menores #}
+            <button
+                type="button"
+                class="navbar-toggle"
+                data-toggle="collapse"
+                data-target=".navbar-collapse"
+            >
+
+                {# Texto usado por leitores de tela #}
+                <span class="sr-only">Toggle navigation</span>
+
+                {# Linhas que formam o botão do menu #}
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+
+            </button>
+
+
+            {# Nome do sistema que aparece na barra de navegação #}
+            <a class="navbar-brand" href="{{ url_for('main.avaliacao_semestral') }}">
+               Avaliação semestral
+            </a>
+
+        </div>
+
+
+        {# Área dos links do menu #}
+        <div class="navbar-collapse collapse">
+
+            {# Lista dos itens da barra de navegação #}
+            <ul class="nav navbar-nav">
+
+                {# Link para a página inicial #}
+                <li>
+                    <a href="{{ url_for('main.indisponivel', modulo='professores') }}">
+                        Cadastro de professores
+                    </a>
+                </li>
+
+                {# Link para o cadastro de disciplinas #}
+                <li>
+                    <a href="{{ url_for('main.indisponivel', modulo='disciplinas') }}">
+                        Cadastro de Disciplinas
+                    </a>
+                </li>
+
+                {# Link para o cadastro de alunos #}
+                <li>
+                    <a href="{{ url_for('main.indisponivel', modulo='alunos') }}">
+                        Cadastro de alunos
+                    </a>
+                </li>
+
+                {# Link para a página de cursos #}
+                <li>
+                    <a href="{{ url_for('main.cursos') }}">
+                        Cursos
+                    </a>
+                </li>
+
+                {# Link para o cadastro de ocorrências #}
+                <li>
+                    <a href="{{ url_for('main.indisponivel', modulo='ocorrencias') }}">
+                        Cadastro de ocorrências
+                    </a>
+                </li>
+
+                {# Exibe as opções conforme o estado de autenticação #}
+                {% if current_user.is_authenticated %}
+                    {% if current_user.confirmed %}
+                        <li>
+                            <a href="{{ url_for('main.usuarios') }}">
+                                Usuários cadastrados
+                            </a>
+                        </li>
+                    {% endif %}
+                {% endif %}
+
+            </ul>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
+
+
+{# Área de conteúdo das páginas #}
+{% block content %}
+
+<div class="container">
+
+    {# Busca as mensagens enviadas pelo Flask #}
+    {% for message in get_flashed_messages() %}
+
+        {# Caixa que apresenta a mensagem ao usuário #}
+        <div class="alert">
+
+            {# Botão para fechar a mensagem #}
+            <button
+                type="button"
+                class="close"
+                data-dismiss="alert"
+            >
+                &times;
+            </button>
+
+            {# Exibe o conteúdo da mensagem #}
+            {{ message }}
+
+        </div>
+
+    {% endfor %}
+
+
+    {# Área onde cada página coloca seu próprio conteúdo #}
+    {% block page_content %}
+    {% endblock %}
+
+</div>
+
+{% endblock %}

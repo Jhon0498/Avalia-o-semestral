@@ -1,0 +1,83 @@
+{# Define que este template herda a estrutura principal do arquivo base.html. #}
+{% extends "base.html" %}
+
+{# Define o título da página. #}
+{% block title %}Cadastro de Cursos{% endblock %}
+
+{# Bloco onde será apresentado o conteúdo principal. #}
+{% block page_content %}
+
+<div class="container">
+
+
+    {# Formulário para cadastrar um novo curso. #}
+    <form method="POST">
+
+        {# Campo oculto para proteção CSRF. #}
+        {{ form.hidden_tag() }}
+
+        {# Campo para informar o nome do curso. #}
+        <div class="form-group">
+            <strong>{{ form.nome.label }}</strong>
+            {{ form.nome(
+                class="form-control",
+                placeholder="Digite o nome do curso"
+            ) }}
+
+            {% for erro in form.nome.errors %}
+                <span class="text-danger">{{ erro }}</span>
+            {% endfor %}
+        </div>
+
+        {# Campo para informar a descrição do curso. #}
+        <div class="form-group">
+            <strong>{{ form.descricao.label }}</strong>
+            {{ form.descricao(
+                class="form-control",
+                rows="4",
+                placeholder="Digite a descrição do curso"
+            ) }}
+
+            {% for erro in form.descricao.errors %}
+                <span class="text-danger">{{ erro }}</span>
+            {% endfor %}
+        </div>
+
+        {# Botão para enviar o formulário. #}
+        {{ form.submit(value="Cadastrar", class="btn btn-default") }}
+
+    </form>
+
+    <hr>
+
+    {# Apresenta a relação de cursos cadastrados. #}
+    <h2>Relação de cursos cadastrados</h2>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Curso</th>
+                <th>Descrição</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {# Percorre os cursos recuperados do banco de dados. #}
+            {% for curso in cursos %}
+                <tr>
+                    <td>{{ curso.nome }}</td>
+                    <td>{{ curso.descricao or '-' }}</td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="2">
+                        Nenhum curso cadastrado.
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+
+{% endblock %}
